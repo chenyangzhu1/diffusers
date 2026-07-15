@@ -20,6 +20,7 @@ import torch
 from transformers import PreTrainedModel, PreTrainedTokenizerFast
 
 from ...guiders.adaptive_projected_guidance import MomentumBuffer, normalized_guidance
+from ...loaders import AceStepLoraLoaderMixin
 from ...models import AutoencoderOobleck
 from ...models.transformers.ace_step_transformer import AceStepTransformer1DModel
 from ...schedulers import FlowMatchEulerDiscreteScheduler
@@ -129,7 +130,7 @@ EXAMPLE_DOC_STRING = """
 """
 
 
-class AceStepPipeline(DiffusionPipeline):
+class AceStepPipeline(DiffusionPipeline, AceStepLoraLoaderMixin):
     r"""
     Pipeline for text-to-music generation using ACE-Step 1.5.
 

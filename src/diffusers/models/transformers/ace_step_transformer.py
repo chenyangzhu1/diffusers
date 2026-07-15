@@ -21,6 +21,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from ...configuration_utils import ConfigMixin, register_to_config
+from ...loaders import PeftAdapterMixin
 from ...utils import logging
 from ..attention import AttentionMixin, AttentionModuleMixin
 from ..attention_dispatch import (
@@ -428,7 +429,7 @@ class AceStepTransformerBlock(nn.Module):
 # --------------------------------------------------------------------------- #
 
 
-class AceStepTransformer1DModel(ModelMixin, ConfigMixin, AttentionMixin, CacheMixin):
+class AceStepTransformer1DModel(ModelMixin, ConfigMixin, PeftAdapterMixin, AttentionMixin, CacheMixin):
     """Diffusion Transformer for ACE-Step 1.5 music generation.
 
     Generates audio latents conditioned on text, lyrics, and timbre. Uses 1D patch embedding (`Conv1d` with stride
