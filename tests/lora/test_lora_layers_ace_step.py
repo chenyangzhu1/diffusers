@@ -70,7 +70,7 @@ class AceStepLoRATests(unittest.TestCase, PeftLoraLoaderMixinTests):
         "sampling_rate": 4,
     }
 
-    tokenizer_cls, tokenizer_id = AutoTokenizer, "/nas/zcy/github_issue/models/Qwen3-Embedding-0.6B-tokenizer"
+    tokenizer_cls, tokenizer_id = AutoTokenizer, "Qwen/Qwen3-Embedding-0.6B"
     text_encoder_cls, text_encoder_id = None, None
 
     text_encoder_target_modules = ["q_proj", "k_proj", "v_proj", "o_proj"]

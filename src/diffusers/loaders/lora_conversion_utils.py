@@ -3117,7 +3117,7 @@ def _convert_non_diffusers_ace_step_lora_to_diffusers(state_dict):
     for key in list(state_dict.keys()):
         new_key = key
         if new_key.startswith("base_model.model."):
-            new_key = new_key[len("base_model.model."):]
+            new_key = new_key[len("base_model.model.") :]
         for old, new in _PROJ_RENAMES.items():
             new_key = new_key.replace(old, new)
         new_key = f"transformer.{new_key}"
