@@ -529,7 +529,7 @@ class AceStepTransformer1DModel(ModelMixin, ConfigMixin, PeftAdapterMixin, Atten
 
         self.gradient_checkpointing = False
 
-    @apply_lora_scale("joint_attention_kwargs")
+    @apply_lora_scale("attention_kwargs")
     def forward(
         self,
         hidden_states: torch.Tensor,
@@ -537,7 +537,7 @@ class AceStepTransformer1DModel(ModelMixin, ConfigMixin, PeftAdapterMixin, Atten
         timestep_r: torch.Tensor,
         encoder_hidden_states: torch.Tensor,
         context_latents: torch.Tensor,
-        joint_attention_kwargs: Optional[dict] = None,
+        attention_kwargs: Optional[dict] = None,
         return_dict: bool = True,
     ) -> Union[torch.Tensor, Transformer2DModelOutput]:
         """The [`AceStepTransformer1DModel`] forward method.
@@ -554,6 +554,9 @@ class AceStepTransformer1DModel(ModelMixin, ConfigMixin, PeftAdapterMixin, Atten
             context_latents (`torch.Tensor` of shape `(batch_size, seq_len, context_dim)`):
                 Context latents (source latents concatenated with chunk masks) — fed to the patchify conv alongside
                 `hidden_states`.
+            attention_kwargs (`dict`, *optional*):
+                A kwargs dictionary passed along to the `AttentionProcessor`. Used to pass the LoRA scale via
+                `{"scale": float}`.
             return_dict (`bool`, defaults to `True`):
                 Whether to return a `Transformer2DModelOutput` or a plain tuple.
 

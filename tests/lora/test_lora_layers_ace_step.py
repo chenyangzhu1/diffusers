@@ -26,6 +26,7 @@ from diffusers.utils.import_utils import is_peft_available
 from ..testing_utils import (
     require_peft_backend,
     skip_mps,
+    torch_device,
 )
 
 
@@ -198,7 +199,7 @@ class AceStepLoRATests(unittest.TestCase, PeftLoraLoaderMixinTests):
 
         components, _, denoiser_lora_config = self.get_dummy_components()
         pipe = self.pipeline_class(**components)
-        pipe = pipe.to("cpu")
+        pipe = pipe.to(torch_device)
         pipe.set_progress_bar_config(disable=None)
         _, _, inputs = self.get_dummy_inputs(with_generator=False)
 
