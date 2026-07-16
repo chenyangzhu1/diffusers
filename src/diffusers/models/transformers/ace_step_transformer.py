@@ -22,7 +22,7 @@ import torch.nn.functional as F
 
 from ...configuration_utils import ConfigMixin, register_to_config
 from ...loaders import PeftAdapterMixin
-from ...utils import logging
+from ...utils import apply_lora_scale, logging
 from ..attention import AttentionMixin, AttentionModuleMixin
 from ..attention_dispatch import (
     AttentionBackendName,
@@ -529,6 +529,7 @@ class AceStepTransformer1DModel(ModelMixin, ConfigMixin, PeftAdapterMixin, Atten
 
         self.gradient_checkpointing = False
 
+    @apply_lora_scale("joint_attention_kwargs")
     def forward(
         self,
         hidden_states: torch.Tensor,
@@ -536,6 +537,7 @@ class AceStepTransformer1DModel(ModelMixin, ConfigMixin, PeftAdapterMixin, Atten
         timestep_r: torch.Tensor,
         encoder_hidden_states: torch.Tensor,
         context_latents: torch.Tensor,
+        joint_attention_kwargs: Optional[dict] = None,
         return_dict: bool = True,
     ) -> Union[torch.Tensor, Transformer2DModelOutput]:
         """The [`AceStepTransformer1DModel`] forward method.
