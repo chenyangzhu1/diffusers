@@ -225,6 +225,10 @@ class AceStepPipeline(DiffusionPipeline, AceStepLoraLoaderMixin):
     def num_timesteps(self) -> int:
         return self._num_timesteps
 
+    @property
+    def joint_attention_kwargs(self):
+        return self._joint_attention_kwargs
+
     def check_inputs(
         self,
         prompt: Union[str, List[str]],
@@ -826,6 +830,7 @@ class AceStepPipeline(DiffusionPipeline, AceStepLoraLoaderMixin):
         cfg_interval_start: float = 0.0,
         cfg_interval_end: float = 1.0,
         timesteps: Optional[List[float]] = None,
+        joint_attention_kwargs: Optional[dict] = None,
     ):
         r"""
         The call function to the pipeline for music generation.
@@ -984,6 +989,7 @@ class AceStepPipeline(DiffusionPipeline, AceStepLoraLoaderMixin):
         # step-end callback can read them without the full arg bundle.
         self._guidance_scale = guidance_scale
         self._num_timesteps = num_inference_steps
+        self._joint_attention_kwargs = joint_attention_kwargs
         self._interrupt = False
 
         # Auto-generate instruction based on task_type if not provided
@@ -1177,6 +1183,7 @@ class AceStepPipeline(DiffusionPipeline, AceStepLoraLoaderMixin):
                         timestep_r=torch.cat([t_curr_tensor, t_curr_tensor], dim=0),
                         encoder_hidden_states=torch.cat([encoder_hidden_states, null_encoder_hidden_states], dim=0),
                         context_latents=torch.cat([context_latents, context_latents], dim=0),
+                        joint_attention_kwargs=self.joint_attention_kwargs,
                         return_dict=False,
                     )
                     vt_cond, vt_uncond = model_output[0].chunk(2, dim=0)
@@ -1200,6 +1207,7 @@ class AceStepPipeline(DiffusionPipeline, AceStepLoraLoaderMixin):
                         timestep_r=t_curr_tensor,
                         encoder_hidden_states=encoder_hidden_states,
                         context_latents=context_latents,
+                        joint_attention_kwargs=self.joint_attention_kwargs,
                         return_dict=False,
                     )
                     vt = model_output[0]
@@ -1212,6 +1220,7 @@ class AceStepPipeline(DiffusionPipeline, AceStepLoraLoaderMixin):
                         timestep_r=t_curr_tensor,
                         encoder_hidden_states=non_cover_encoder_hidden_states,
                         context_latents=context_latents,
+                        joint_attention_kwargs=self.joint_attention_kwargs,
                         return_dict=False,
                     )
                     vt_nc = nc_output[0]

@@ -189,22 +189,6 @@ class AceStepLoRATests(unittest.TestCase, PeftLoraLoaderMixinTests):
     def test_correct_lora_configs_with_different_ranks(self):
         pass
 
-    @unittest.skip("AceStepPipeline does not accept attention_kwargs for LoRA scale.")
-    def test_simple_inference_with_text_denoiser_lora_and_scale(self):
-        pass
-
-    @unittest.skip("AceStepPipeline does not accept attention_kwargs for LoRA scale.")
-    def test_lora_scale_kwargs_match_fusion(self):
-        pass
-
-    @unittest.skip("AceStepPipeline does not accept attention_kwargs for LoRA scale.")
-    def test_set_adapters_match_attention_kwargs(self):
-        pass
-
-    @unittest.skip("AceStepPipeline does not accept attention_kwargs for LoRA scale.")
-    def test_simple_inference_with_text_lora_and_scale(self):
-        pass
-
     @unittest.skip("AceStep attention layers have no bias; lora_bias is not applicable.")
     def test_lora_B_bias(self):
         pass
