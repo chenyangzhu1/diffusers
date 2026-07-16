@@ -914,6 +914,9 @@ class AceStepPipeline(DiffusionPipeline, AceStepLoraLoaderMixin):
                 End ratio (0.0-1.0) of the timestep range where CFG is applied.
             timesteps (`List[float]`, *optional*):
                 Custom timestep schedule. If provided, overrides `num_inference_steps` and `shift`.
+            attention_kwargs (`dict`, *optional*):
+                A kwargs dictionary passed along to the `AttentionProcessor`. Used to pass the LoRA scale via
+                `{"scale": float}`.
 
         Examples:
 
