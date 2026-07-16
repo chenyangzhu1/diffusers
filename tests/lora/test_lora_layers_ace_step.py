@@ -209,6 +209,23 @@ class AceStepLoRATests(unittest.TestCase, PeftLoraLoaderMixinTests):
     def test_lora_B_bias(self):
         pass
 
-    @unittest.skip("AceStep uses 'layers' not 'transformer_blocks'/'blocks'; base test hardcodes block names.")
     def test_lora_fuse_nan(self):
-        pass
+        import numpy as np
+
+        components, _, denoiser_lora_config = self.get_dummy_components()
+        pipe = self.pipeline_class(**components)
+        pipe = pipe.to("cpu")
+        pipe.set_progress_bar_config(disable=None)
+        _, _, inputs = self.get_dummy_inputs(with_generator=False)
+
+        pipe.transformer.add_adapter(denoiser_lora_config, "adapter-1")
+
+        with torch.no_grad():
+            pipe.transformer.layers[0].self_attn.to_q.lora_A["adapter-1"].weight += float("inf")
+
+        with self.assertRaises(ValueError):
+            pipe.fuse_lora(safe_fusing=True)
+
+        pipe.fuse_lora(safe_fusing=False)
+        out = pipe(**inputs, generator=torch.manual_seed(0))[0]
+        self.assertTrue(np.isnan(out).all())
