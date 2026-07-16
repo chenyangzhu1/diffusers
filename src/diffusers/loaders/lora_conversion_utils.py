@@ -3099,11 +3099,9 @@ def _convert_non_diffusers_krea2_lora_to_diffusers(state_dict):
 def _convert_non_diffusers_ace_step_lora_to_diffusers(state_dict):
     """Convert an ACE-Step-1.5 (PEFT format) LoRA state dict to diffusers key names.
 
-    The original ACE-Step repo targets ``q_proj``, ``k_proj``, ``v_proj``, ``o_proj``
-    on the DiT decoder while diffusers renames them to ``to_q``, ``to_k``, ``to_v``,
-    ``to_out.0``.  Keys arrive as
-    ``base_model.model.layers.{i}.{self_attn|cross_attn}.{proj}.lora_{A|B}.weight``
-    and are mapped to
+    The original ACE-Step repo targets ``q_proj``, ``k_proj``, ``v_proj``, ``o_proj`` on the DiT decoder while
+    diffusers renames them to ``to_q``, ``to_k``, ``to_v``, ``to_out.0``. Keys arrive as
+    ``base_model.model.layers.{i}.{self_attn|cross_attn}.{proj}.lora_{A|B}.weight`` and are mapped to
     ``transformer.layers.{i}.{self_attn|cross_attn}.{proj_diffusers}.lora_{A|B}.weight``.
     """
     _PROJ_RENAMES = {
